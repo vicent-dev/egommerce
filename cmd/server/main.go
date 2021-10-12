@@ -8,13 +8,8 @@ import (
 )
 
 func main() {
-	if err := run(); err != nil {
+	if err := http.InitServer(); err != nil {
 		fmt.Fprintf(os.Stderr, "%v", err)
 		os.Exit(1)
 	}
-}
-
-func run() error {
-	http.InitServer()
-	return nil
 }
