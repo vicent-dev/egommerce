@@ -1,2 +1,5 @@
+HTTP_SERVER_PATH = ./cmd/server/main.go
+
+
 run-server:
-	go run ./cmd/server/main.go
+	go run $(HTTP_SERVER_PATH)
