@@ -3,8 +3,9 @@ package register
 type UserRepository interface {
 	create(User) error
 }
+
 type Service interface {
-	Register(User) error
+	Register(u User) error
 }
 
 type service struct {

@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -18,9 +19,19 @@ func handleUser(r *mux.Router, c context.Context) {
 }
 
 func registerUser(w http.ResponseWriter, r *http.Request) {
+	var u register.User
 
-	if err := register.Service.Register(); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&u); err != nil {
+		errorResponse(w, err)
 		return
 	}
+
+	if err := registerService.Register(u); err != nil {
+		errorResponse(w, err)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
 	return
+
 }
