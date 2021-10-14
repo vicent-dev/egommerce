@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -8,7 +9,7 @@ import (
 )
 
 func main() {
-	if err := http.InitServer(); err != nil {
+	if err := http.InitServer(context.Background()); err != nil {
 		fmt.Fprintf(os.Stderr, "%v", err)
 		os.Exit(1)
 	}

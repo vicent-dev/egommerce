@@ -1,6 +1,7 @@
 package http
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/en-vee/alog"
@@ -21,12 +22,12 @@ func jsonMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func InitServer() error {
+func InitServer(ctx context.Context) error {
 	r := mux.NewRouter()
 	r.Use(jsonMiddleware)
 	r.Use(loggingMiddleware)
 
-	handleUser(r)
+	handleUser(r, ctx)
 
 	return http.ListenAndServe(":8080", r)
 }
