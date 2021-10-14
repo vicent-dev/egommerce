@@ -3,8 +3,16 @@ package http
 import (
 	"net/http"
 
+	"github.com/en-vee/alog"
 	"github.com/gorilla/mux"
 )
+
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		alog.Info(r.RequestURI)
+		next.ServeHTTP(w, r)
+	})
+}
 
 func jsonMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -16,6 +24,9 @@ func jsonMiddleware(next http.Handler) http.Handler {
 func InitServer() error {
 	r := mux.NewRouter()
 	r.Use(jsonMiddleware)
+	r.Use(loggingMiddleware)
+
+	handleUser(r)
 
 	return http.ListenAndServe(":8080", r)
 }
