@@ -1,9 +1,10 @@
 package app
 
 import (
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
-	"net/http"
 )
 
 type server struct {
@@ -14,6 +15,7 @@ type server struct {
 func NewServer() *server {
 	var s server
 	s.router = mux.NewRouter()
+
 	s.database()
 	s.routes()
 
@@ -21,5 +23,5 @@ func NewServer() *server {
 }
 
 func (s *server) Serve() error {
-    return http.ListenAndServe(":8080", s.router)
+	return http.ListenAndServe(":8080", s.router)
 }

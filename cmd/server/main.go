@@ -15,5 +15,5 @@ func main() {
 }
 
 func run() error {
-    return app.NewServer().Serve()
+	return app.NewServer().Serve()
 }

@@ -28,10 +28,13 @@ func jsonMiddleware(next http.Handler) http.Handler {
 }
 
 func (s *server) routes() {
-    s.router.Use(loggingMiddleware)
-    s.router.Use(jsonMiddleware)
+	s.router.Use(loggingMiddleware)
+	s.router.Use(jsonMiddleware)
 
-    s.router.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
-        w.Write([]byte("{\"ping\": \"pong\"}"))
-    })
+	//ping example
+	s.router.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("{\"ping\": \"pong\"}"))
+	}).Methods("GET")
+
+	s.router.HandleFunc("/user", s.regiserUser()).Methods("GET", "POST")
 }
