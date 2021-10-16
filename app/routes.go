@@ -1,12 +1,10 @@
-package http
+package app
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 
 	"github.com/en-vee/alog"
-	"github.com/gorilla/mux"
 )
 
 func errorResponse(w http.ResponseWriter, err error) {
@@ -14,6 +12,7 @@ func errorResponse(w http.ResponseWriter, err error) {
 	json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 }
 
+//middlewares
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		alog.Info(r.RequestURI)
@@ -28,12 +27,11 @@ func jsonMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func InitServer(ctx context.Context) error {
-	r := mux.NewRouter()
-	r.Use(jsonMiddleware)
-	r.Use(loggingMiddleware)
+func (s *server) routes() {
+    s.router.Use(loggingMiddleware)
+    s.router.Use(jsonMiddleware)
 
-	handleUser(r, ctx)
-
-	return http.ListenAndServe(":8080", r)
+    s.router.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+        w.Write([]byte("{\"ping\": \"pong\"}"))
+    })
 }
