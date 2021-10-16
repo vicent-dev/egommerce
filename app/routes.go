@@ -10,8 +10,6 @@ func errorResponse(w http.ResponseWriter, err error) {
 	json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 }
 
-//middlewares
-
 func (s *server) routes() {
 	s.router.Use(loggingMiddleware)
 	s.router.Use(jsonMiddleware)
